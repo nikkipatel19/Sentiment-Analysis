@@ -36,9 +36,9 @@ we have completed some sentiment analysis in python using two different techniqu
 
 
 
-# We are showing score for positive review, negative review, neutral review and also shown compound score
+We are showing score for positive review, negative review, neutral review and also shown compound score
 
-# After that we have shown score of review for each column on entire dataset
+After that we have shown score of review for each column on entire dataset
 
 **VADER vs Roberta**
 
