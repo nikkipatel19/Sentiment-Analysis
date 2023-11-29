@@ -28,6 +28,9 @@ we have completed some sentiment analysis in python using two different techniqu
 1. VADER (Valence Aware Dictionary and sEntiment Reasoner) - Bag of words approach
 2. Roberta Pretrained Model from 🤗Huggingface Pipeline
 
+<img width="922" alt="Screenshot 2023-11-29 at 7 57 13 AM" src="https://github.com/nikkipatel19/Sentiment-Analysis/assets/67902583/24a48715-904f-4e42-8590-4c79899a4dcc">
+
+
 **VADER vs Roberta**
 
 VADER (Valence Aware Dictionary and sEntiment Reasoner) and RoBERTa (Robustly optimized BERT approach) are two different tools used in natural language processing (NLP) for sentiment analysis, but they have different approaches and purposes.
