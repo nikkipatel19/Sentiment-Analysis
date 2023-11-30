@@ -9,7 +9,6 @@
 
 # ## Read in Data and NLTK Basics
 
-# In[1]:
 
 
 import pandas as pd
@@ -22,7 +21,7 @@ plt.style.use('ggplot')
 import nltk
 
 
-# In[2]:
+
 
 
 # Read in data
@@ -32,7 +31,6 @@ df = df.head(500)
 print(df.shape)
 
 
-# In[3]:
 
 
 df.head()
@@ -40,7 +38,7 @@ df.head()
 
 # ## Performing Basic EDA
 
-# In[4]:
+
 
 
 ax = df['Score'].value_counts().sort_index() \
@@ -53,42 +51,27 @@ plt.show()
 
 # ## Basic NLTK¶
 
-# In[5]:
+
 
 
 example = df['Text'][55]
 print(example)
 
 
-# In[6]:
-
 
 tokens = nltk.word_tokenize(example)
 tokens[:10]
-
-
-# In[7]:
 
 
 tagged = nltk.pos_tag(tokens)
 tagged[:10]
 
 
-# In[8]:
-
-
 import nltk
 nltk.download('vader_lexicon')
 
-
-# In[9]:
-
-
 import nltk
 nltk.download('vader_lexicon')
-
-
-# In[10]:
 
 
 entities = nltk.chunk.ne_chunk(tagged)
@@ -102,7 +85,7 @@ entities.pprint()
 # * Stop words are removed
 # * Each word is scored and combined to a total score.
 
-# In[11]:
+
 
 
 from nltk.sentiment import SentimentIntensityAnalyzer
@@ -111,25 +94,20 @@ from tqdm.notebook import tqdm
 sia = SentimentIntensityAnalyzer()
 
 
-# In[12]:
-
-
 sia.polarity_scores('I cannot stop smiling because I just got the things I have been waiting for')
 
 
-# In[13]:
 
 
 sia.polarity_scores('This is the worst prouct i have ever purchased.')
 
 
-# In[14]:
 
 
 sia.polarity_scores(example)
 
 
-# In[15]:
+
 
 
 # Run the polarity score on the entire dataset
@@ -140,7 +118,7 @@ for i, row in tqdm(df.iterrows(), total=len(df)):
     res[myid] = sia.polarity_scores(text)
 
 
-# In[16]:
+
 
 
 vaders = pd.DataFrame(res).T
@@ -148,14 +126,13 @@ vaders = vaders.reset_index().rename(columns={'index': 'Id'})
 vaders = vaders.merge(df, how='left')
 
 
-# In[17]:
+
 
 
 # Now we have sentiment score and metadata
 vaders.head()
 
 
-# In[18]:
 
 
 ax = sns.barplot(data=vaders, x='Score', y='compound')
@@ -163,7 +140,6 @@ ax.set_title('Compund Score by Amazon Star Review')
 plt.show()
 
 
-# In[19]:
 
 
 fig, axs = plt.subplots(1, 3, figsize=(12, 3))
@@ -181,7 +157,7 @@ plt.show()
 # * Use a model trained of a large corpus of data.
 # * Transformer model accounts for the words but also the context related to other words
 
-# In[20]:
+
 
 
 from transformers import AutoTokenizer
@@ -189,7 +165,7 @@ from transformers import AutoModelForSequenceClassification
 from scipy.special import softmax
 
 
-# In[21]:
+
 
 
 MODEL = f"cardiffnlp/twitter-roberta-base-sentiment"
@@ -197,7 +173,7 @@ tokenizer = AutoTokenizer.from_pretrained(MODEL)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL)
 
 
-# In[22]:
+
 
 
 # VADER results on example
@@ -205,7 +181,7 @@ print(example)
 sia.polarity_scores(example)
 
 
-# In[23]:
+
 
 
 # Run for Roberta Model
@@ -221,7 +197,6 @@ scores_dict = {
 print(scores_dict)
 
 
-# In[24]:
 
 
 def polarity_scores_roberta(example):
@@ -237,7 +212,6 @@ def polarity_scores_roberta(example):
     return scores_dict
 
 
-# In[25]:
 
 
 res = {}
@@ -256,7 +230,7 @@ for i, row in tqdm(df.iterrows(), total=len(df)):
         print(f'Broke for id {myid}')
 
 
-# In[26]:
+
 
 
 results_df = pd.DataFrame(res).T
@@ -266,7 +240,7 @@ results_df = results_df.merge(df, how='left')
 
 # ## Compare Scores between models
 
-# In[27]:
+
 
 
 results_df.columns
@@ -274,7 +248,7 @@ results_df.columns
 
 # ## Combine and compare
 
-# In[28]:
+
 
 
 sns.pairplot(data=results_df,
@@ -289,14 +263,14 @@ plt.show()
 # * Positive 1-Star and Negative 5-Star Reviews
 # * Lets look at some examples where the model scoring and review score differ the most.
 
-# In[39]:
+
 
 
 results_df.query('Score == 1') \
     .sort_values('roberta_pos', ascending=False)['Text'].values[0]
 
 
-# In[40]:
+
 
 
 results_df.query('Score == 1') \
@@ -305,7 +279,6 @@ results_df.query('Score == 1') \
 
 # ## negative sentiment 5-Star view
 
-# In[41]:
 
 
 results_df.query('Score == 5') \
@@ -315,7 +288,7 @@ results_df.query('Score == 5') \
 # ## The Transformers Pipeline
 # * Quick & easy way to run sentiment predictions
 
-# In[42]:
+
 
 
 from transformers import pipeline
@@ -323,25 +296,23 @@ from transformers import pipeline
 sent_pipeline = pipeline("sentiment-analysis")
 
 
-# In[43]:
+
 
 
 sent_pipeline('I love java it is an amazing language')
 
 
-# In[44]:
 
 
 sent_pipeline('o wow congrats you got a job')
 
 
-# In[45]:
+
 
 
 sent_pipeline('I won every BATTLE but i am LOSING this WAR"')
 
 
-# In[ ]:
 
 
 
